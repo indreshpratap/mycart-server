@@ -49,6 +49,10 @@ function getUsername(){
 
 /* End of utility functions */
 
+$app->get("/",function() use ($app){
+    $app->render("index.html");
+
+});
 $app->group("/api",function() use ($app) {
 
     $app->get("/initial-setup",function() use ($app) {
@@ -93,10 +97,31 @@ $app->group("/api",function() use ($app) {
             echoJSON($app,$info);
 
         } else {
-           echoJSON($app,$body);
+          fail($app);
         }
     });
 
+$app->get('/user-info',function() use ($app){
+    if(isset( $_SESSION["username"]) ){
+        $info = R::getRow("select name,role,username from users where username= ?",[getUsername()]);
+        if(isset($info)){
+            $info["status"]= true;
+            echoJSON($app,$info);
+        }else {
+            fail($app);
+        }
+    }else {
+            fail($app);
+        }
+});
+
+$app->get('/logout',function() use ($app){
+    $_SESSION["username"]=null;
+    $_SESSION["role"]=null;
+    session_destroy();
+    ok($app);
+        
+});
 
 $app->group("/user", function() use ($app) {
     require 'routes/user.routes.php';

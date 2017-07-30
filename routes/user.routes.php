@@ -1,5 +1,14 @@
 <?php
 
+
+$app->get('/get-all-products', function() use ($app) {
+   
+    $data = R::getAll('select * from products where active = 1');
+  
+    echoJSON($app, $data);
+});
+
+
 $app->post('/add-to-cart', function() use ($app) {
    $data = getBody($app);
    $cart = R::dispense("cart");

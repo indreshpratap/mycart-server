@@ -14,7 +14,7 @@ $app->post('/save-product', function() use ($app) {
 
 $app->get('/get-products', function() use ($app) {
    
-    $data = R::getAll('select * from products where active=1');
+    $data = R::getAll('select * from products');
   
     echoJSON($app, $data);
 });
