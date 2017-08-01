@@ -18,6 +18,12 @@ $app->get('/get-products', function() use ($app) {
   
     echoJSON($app, $data);
 });
+$app->get('/get-product-by-id/:id', function($id) use ($app) {
+   
+    $data = R::getRow('select * from products where id=?',[$id]);
+  
+    echoJSON($app, $data);
+});
 
 
 
